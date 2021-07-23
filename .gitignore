@@ -5,6 +5,8 @@ HELP.md
 !**/src/test/**/build/
 build/
 
+.DS_Store
+
 ### STS ###
 .apt_generated
 .classpath
