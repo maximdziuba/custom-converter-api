@@ -1,5 +1,6 @@
 package com.converter.service;
 
+import com.converter.exception.NoSuchCurrencyException;
 import com.converter.model.Currency;
 import com.converter.parser.Parser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +16,16 @@ public class CurrencyService {
     private Parser parser;
     List<Currency> currencies = new ArrayList<>();
     private Map<String, String> currenciesNames = Map.ofEntries(
-        Map.entry("uah", "Украинская гривна"),
-        Map.entry("chf", "Юань"),
-        Map.entry("eur", "Евро"),
-        Map.entry("dkk", "Датская крона"),
-        Map.entry("cad", "Канадский доллар"),
-        Map.entry("usd", "Доллар"),
-        Map.entry("rub", "Рубль"),
-        Map.entry("byn", "Белорусский рубль"),
-        Map.entry("czk", "Чешский крон"),
-        Map.entry("pln", "Польский злотый")
+            Map.entry("uah", "Украинская гривна"),
+            Map.entry("chf", "Юань"),
+            Map.entry("eur", "Евро"),
+            Map.entry("dkk", "Датская крона"),
+            Map.entry("cad", "Канадский доллар"),
+            Map.entry("usd", "Доллар"),
+            Map.entry("rub", "Рубль"),
+            Map.entry("byn", "Белорусский рубль"),
+            Map.entry("czk", "Чешский крон"),
+            Map.entry("pln", "Польский злотый")
     );
 
     @Autowired
@@ -44,14 +45,27 @@ public class CurrencyService {
         return currencies;
     }
 
-//    public List<Currency> countRateByUah(String currencyCode, Float value) {
+    //    public List<Currency> countRateByUah(String currencyCode, Float value) {
     public String countRateByUah(String fromCurrencyCode, String toCurrencyCode, Float value) {
-        Currency fromFilteredCurrency = currencies.stream()
-                .filter(currency -> currency.getCurrencyCode().equals(fromCurrencyCode))
-                .collect(Collectors.toList()).get(0);
-        Currency toFilteredCurrency = currencies.stream()
-                .filter(currency -> currency.getCurrencyCode().equals(toCurrencyCode))
-                .collect(Collectors.toList()).get(0);
+        getCurrencies();
+//        Currency fromFilteredCurrency = new Currency(1.0, "uah");
+//        Currency toFilteredCurrency = new Currency(27.0, "usd");
+        Currency fromFilteredCurrency = null;
+        Currency toFilteredCurrency = null;
+        for (Currency currency1 : currencies) {
+            if (currency1.getCurrencyCode().equals(fromCurrencyCode)) {
+                fromFilteredCurrency = currency1;
+            }
+        }
+        for (Currency currency : currencies) {
+            if (currency.getCurrencyCode().equals(toCurrencyCode)) {
+                toFilteredCurrency = currency;
+            }
+        }
+
+        if (fromFilteredCurrency == null || toFilteredCurrency == null) {
+            throw new NoSuchCurrencyException("Не знайдено такої валюти:(");
+        }
         java.util.Currency fromCurrencyInstance = java.util.Currency.getInstance(fromCurrencyCode.toUpperCase());
         String fromCurrencySymbol = fromCurrencyInstance.getSymbol();
         java.util.Currency toCurrencyInstance = java.util.Currency.getInstance(toCurrencyCode.toUpperCase());
