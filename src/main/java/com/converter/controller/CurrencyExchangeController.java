@@ -36,7 +36,7 @@ public class CurrencyExchangeController {
         if (value == "") {
             throw new EmptyCurrencyFieldException("Поле не може бути порожнім");
         }
-        this.value = currencyService.countRateByUah(fromCurrency, toCurrency, Float.parseFloat(value));
+        this.value = currencyService.countRateByUah(fromCurrency.toLowerCase(), toCurrency.toLowerCase(), Float.parseFloat(value));
         model.addAttribute("fromCurrency", this.fromCurrency);
         model.addAttribute("toCurrency", this.toCurrency);
         model.addAttribute("value", this.value);
