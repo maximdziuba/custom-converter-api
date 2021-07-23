@@ -31,8 +31,8 @@ public class CurrencyExchangeController {
 
     @PostMapping
     public String addCurrenciesForExchanging(@RequestParam String fromCurrency, @RequestParam String toCurrency, @RequestParam String value, Model model) {
-        this.fromCurrency = fromCurrency;
-        this.toCurrency = toCurrency;
+        this.fromCurrency = fromCurrency.toLowerCase();
+        this.toCurrency = toCurrency.toLowerCase();
         if (value == "") {
             throw new EmptyCurrencyFieldException("Поле не може бути порожнім");
         }
