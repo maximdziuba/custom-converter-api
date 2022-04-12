@@ -25,7 +25,9 @@ website. There are some popular currencies.
 
 ### Running app
 This app can be runned from any Java IDE or from command line with jar-file.
-    1. git clone https://github.com/maximdziuba/custom-converter-api.git 
-    2. cd <Project path>
+
+   
+    1. https://github.com/maximdziuba/custom-converter-api.git
+    2. cd <path to project>
     3. java -jar converter.jar
     4. go to localhost:8080 to test web app or to localhost:8080/api/count to test api
